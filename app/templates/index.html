@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-0">
+
+
+            <!--<div class="page-header">-->
+                <!--<button class="btn btn- btn-success btn-lg" id = "addgoal" onclick="newGoal();">Add New Goal</button>-->
+            <!--</div>-->
+
+
+            <label for = "tomorrow">tomorrow
+                <input type = "radio" id = "tomorrow" name="filter" value = "tomorrow" onclick="filterGoals();">
+
+            </label>
+            <label for = "this week">this week
+                <input type = "radio" id = "this week" name="filter" value = "this week" onclick="filterGoals();">
+            </label>
+            <label for = "this month">this month
+                <input type = "radio" id = "this month" name="filter" value = "this month" onclick="filterGoals();">
+            </label>
+            <label for = "showall">show all
+                <input type = "radio" id = "showall" name="filter" value = "showall" onclick="getAll();">
+            </label>
+
+            <br><br>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <!--<div id= "activelabel" class="label"> <h4 class = "link">Active Goals</h4> </div>-->
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h3>Active Goals</h3>
+                    <hr class="star-primary">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <ul>
+                        {% for event in events['active'] %}
+                             <li>
+                                 <input type="checkbox" class="check" id = "chckHead" name = "chckHead" onclick="markComp({{event}});" />
+                                 <span style="font-size:3em;">{{ event['event_name']}} </span>
+                                 <span style="font-size:2em;" class="glyphicon glyphicon-edit" id = "editgoal" onclick="editGoal({{event}});"></span>
+
+                                 <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
+
+                             </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h3>Completed Goals</h3>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <ul>
+                        {% for event in events['completed'] %}
+                             <li>
+
+                                <span style="font-size:3em;">{{ event['event_name']}} </span>
+
+                                <span style="font-size:2em;" class="	glyphicon glyphicon-refresh " id = "readd" name = "readd" onclick="" ></span>
+                                <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "delcomp" onclick="deleteGoal({{event}});"></span>
+
+                             </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+           <div id="duetodaydiag">
+              {% for event in events['duetoday'] %}
+                    <label id="notlabel"></label>
+              {% endfor %}
+            </div>
+
+
+            <form class= "editdiag" id="editdiag" title="Edit Goal">
+
+                <input type="text" placeholder="Event Name" id="edit_eventname" class="edit_eventname"> <br><br>
+                <input type="datetime-local" placeholder="Event Deadline" id="edit_eventdeadline" class="edit_eventdeadline"><br><br>
+
+
+                <select id = "edit_eventpriority" class = "eventpriority"><br><br>
+                      <option value = "chem" > chem </option>
+                      <option value = "ther" > ther </option>
+                      <option value = "nucl"> nucl </option>
+                </select>
+
+                <select id = "edit_eventreminder" class = "eventreminder"><br><br>
+                    <option value = "daily"> daily </option>
+                    <option value = "weekly"> weekly </option>
+                    <option value = "monthly"> monthly </option>
+                 </select>
+
+                <input type="datetime-local" id="eventcreate" name="eventcreate" class="hidden eventcreate"><br><br>
+                <input type="text" id="mongid" name="mongid" class= "hidden mongid">
+                <div type="button" id = "addtodo" class="btn btn-success" onclick="newTodo();"></div>
+
+
+                  <ul id = "todolist"></ul>
+                      <div id = "todoentry" class="col-sm-4 buttonwrapper">
+                            <input type="text" id="todo" name="todo"/>
+                            <div type = "button" class="btn btn-success" id = "savetodo" onclick="saveTodo();" >add</div>
+                            <div type = "button" class="btn btn-warning" id = "canceltodo" onclick="cancelTodo();" >cancel</div>
+                      </div>
+            </form>
+
+           {% endblock %}
+
