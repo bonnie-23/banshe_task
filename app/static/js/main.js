@@ -72,29 +72,22 @@ function newGoal() {
 function newTodo(){
     var todoentry = document.getElementById("todoentry");
     todoentry.style.visibility = "visible";
-//    todo.style.display = "block";
-
-//    var addbtn = document.getElementById("addtodo");
-//    addbtn.style.visibility = "hidden";
 }
 
-
-
-
-function getTodolist() {
-
-        var todolist = [];
-        $('#todolist li').each(function(){
-            todolist.push($(this).attr('value'));
-        });
-        return todolist
+function addTodo() {
+    if ($("#todo_name").val()!=''){
+        $("#todolist").append(
+            $('<li value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
+        )
+        $("#todo_name").val('')
     }
 }
 
 
-//Select an event in active or completed lists
+
+
+//mark selected goal as complete
 function markComp(event) {
-    //mark selected goal as complete
     $("input.check").change( function() {
         if($(this).is(':checked')){
             event['event_status'] = JSON.stringify($(this).is(':checked'));
@@ -146,8 +139,6 @@ function editGoal(event) {
         }
     });
 }
-
-
 
 function deleteGoal(event) {
     //confirm delete dialog
@@ -212,7 +203,7 @@ function saveGoal(action,create,mongo_id) {
 
             dict['event_name'] = name
             dict['event_deadline'] = deadline
-//            dict['event_todolist'] = todolist
+            dict['event_todolist'] = todolist
             dict['event_priority'] = priority
             dict['event_reminder'] = reminder
 
@@ -223,22 +214,17 @@ function saveGoal(action,create,mongo_id) {
                   dataType: "JSON",
                   data: JSON.stringify(dict),
             });
-
         }
         getAll();
     }
 
-    function saveTodo() {
-        var todolist = []
-
-        if ($("#todo_name").val()!=''){
-            todolist.push($("#todo_name").val())
-            $("#todolist").append(
-                $('<li value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
-            )
-            $("#todo").val('')
-        }
-
+    function getTodolist() {
+        var todolist = [];
+        $('#todolist li').each(function(){
+            todolist.push($(this).attr('value'));
+        });
+        console.log(todolist)
+        return todolist
     }
 }
 
@@ -306,8 +292,8 @@ function clearForm(formname) {
 function loadPage() {
 
     //Hide todoentry
-    var todoentry = document.getElementById("todoentry");
-    todoentry.style.visibility = "hidden";
+    var todo = document.getElementById("todoentry");
+    todo.style.visibility = "hidden";
 
 
     //Get events from MongoDB
@@ -316,7 +302,7 @@ function loadPage() {
     var today_events = temp['duetoday']
     var active_events = temp['active']
 
-    //check for reminders
+    //check reminder frequency
 //    remFrequency();
 
     //call countdown dialog only once
@@ -331,7 +317,7 @@ function loadPage() {
     }
 
 
-    //countdown timer to deadline W3Schools
+    //countdown timer for items due today to deadline W3Schools
     function countdownTimer(eventname,deadline){
         var countDownDate = new Date(deadline).getTime();
         var new_id = Math.floor((Math.random() * 999) + 1)
@@ -376,8 +362,6 @@ function loadPage() {
                 name= goal["event_name"]
                 mongo_id= goal["mongo_id"]
                 showNotification(name,'Expired Deadline')
-
-
             }
         }
 
@@ -448,7 +432,7 @@ function loadPage() {
             }
         }
     }
-}
+
 
 
     //toggle collapsible for todolist
@@ -456,15 +440,19 @@ function loadPage() {
     var i;
 
     for (i = 0; i < coll.length; i++) {
+          $('.collapsible ul').each(function() {
+            $(this).hide()
+          });
+
           coll[i].addEventListener("click", function() {
             this.classList.toggle("active");
             if (this.children){
                 var content = this.children;
-                if (content.style.display === "block") {
-                  content.style.display = "none";
+                if (content[1].style.display === "block") {
+                   content[1].style.display = "none";
                 }
                 else {
-                  content.style.display = "block";
+                    content[1].style.display = "block";
                 }
             }
 

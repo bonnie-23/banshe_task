@@ -113,8 +113,12 @@ code {
   padding: 0 8px;
 }
 
-ul {
+.goal {
   list-style: none;
+  display=none;
+}
+.collapsible ul{
+
 }
 
 .collapsible {
@@ -127,10 +131,10 @@ ul {
     text-align: left;
     outline: none;
     font-size: 12px;
-    border-top-right-radius:20px;
-    border-top-left-radius:20px;
-    border-bottom-right-radius:20px;
-    border-bbottom-left-radius:20px;
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
+    border-bottom-right-radius:10px;
+    border-bbottom-left-radius:10px;
 }
 
 .active, .collapsible:hover {
@@ -143,7 +147,6 @@ ul {
     overflow: hidden;
     background-color: #f1f1f1;
 }
-
 
 </style>
 
@@ -188,7 +191,7 @@ ul {
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <ul>
+                        <ul class ="goal">
                             {% for event in events['active'] %}
                                  <li class="collapsible">
                                      <!--<input type="checkbox" class="check" id = "chckHead" name = "chckHead" onclick="markComp({{event}});" />-->
@@ -198,6 +201,13 @@ ul {
                                          <span style="font-size:2em;" class="glyphicon glyphicon-edit " id = "editgoal" onclick="editGoal({{event}});" ></span>
                                          <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
                                      </div>
+                                     <ul>
+                                         {% if event['event_todolist']|length >0 %}
+                                            {% for todo in event['event_todolist']%}
+                                                <li> {{todo}} </li>
+                                            {%endfor%}
+                                         {% endif %}
+                                     </ul>
 
                                  </li>
                             {% endfor %}
@@ -219,7 +229,7 @@ ul {
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <ul>
+                        <ul class = "goal">
                             {% for event in events['completed'] %}
                                  <li class = "collapsible">
                                     <div class="inputGroup">

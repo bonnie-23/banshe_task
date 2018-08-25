@@ -39,7 +39,7 @@ def makeeventlist(lst,item):
     lst.append({'event_name': item['event_name'],
                     'event_priority': item['event_priority'],
                     'event_status': item['event_status'],
-                    'event_todolist': ast.literal_eval(item['event_todolist']),
+                    'event_todolist': item['event_todolist'],
                     'event_reminder': item['event_reminder'],
                     'event_deadline': item['event_deadline'],
                     'event_createdate': item['event_createdate'],
@@ -179,21 +179,16 @@ gets event object and inserts into MongoDB
 '''
 @app.route('/insertgoal', methods=['GET','POST'])
 def insert_goal():
-
     eventrecord = makeevent({ 'event_name': request.json['event_name'],
                                    'event_priority': request.json['event_priority'],
                                    'event_status': "False",
                                    'event_deadline': fixdate(request.json['event_deadline']),
-                                   'event_todolist': "[]",
+                                   'event_todolist': request.json['event_todolist'],
                                    'event_reminder': request.json['event_reminder'],
                                    'event_createdate': datetime.now().replace(second=0,microsecond=0)
                               })
-
-    # if request.json['event_todolist']
     eventrecord.insert_event()
-    # flash('Goal added successfully')
     return redirect( url_for('get_all_goals',page='start') )
-    #return  render_template('response.html', insresult = eventrecord.insert_event())
 
 
 
