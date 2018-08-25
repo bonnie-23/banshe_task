@@ -1,21 +1,163 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+.inputGroup {
+    display: block;
+    margin: 10px;
+    position: relative;
+
+    label {
+      padding: 12px 10px;
+      width: 100%;
+      display: block;
+      text-align: left;
+      color: #3C454C;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: color 200ms ease-in;
+      overflow: hidden;
+
+      &:before {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        content: '';
+        background-color: #5562eb;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale3d(1, 1, 1);
+        transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        opacity: 0;
+        z-index: -1;
+      }
+
+      &:after {
+        width: 32px;
+        height: 32px;
+        content: '';
+        border: 2px solid #D1D7DC;
+        background-color: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+        background-repeat: no-repeat;
+        background-position: 2px 3px;
+        border-radius: 50%;
+        z-index: 2;
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: all 200ms ease-in;
+      }
+    }
+
+    input:checked ~ label {
+      color: #fff;
+
+      &:before {
+        transform: translate(-50%, -50%) scale3d(56, 56, 1);
+        opacity: 1;
+      }
+
+      &:after {
+        background-color: #54E0C7;
+        border-color: #54E0C7;
+      }
+    }
+
+    input {
+      width: 32px;
+      height: 32px;
+      order: 1;
+      z-index: 2;
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      visibility: hidden;
+    }
+  }
+
+
+// codepen formatting
+.form {
+  padding: 0 16px;
+  max-width: 550px;
+  margin: 50px auto;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 36px;
+}
+
+body {
+  background-color: #D1D7DC;
+  font-family: 'Fira Sans', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+code {
+  background-color: #9AA3AC;
+  padding: 0 8px;
+}
+
+ul {
+  list-style: none;
+}
+
+.collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 12px;
+    border-top-right-radius:20px;
+    border-top-left-radius:20px;
+    border-bottom-right-radius:20px;
+    border-bbottom-left-radius:20px;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 10px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+
+</style>
+
+
 
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-0">
+        <div class="col-lg-12 text-center">
 
 
-            <!--<div class="page-header">-->
-                <!--<button class="btn btn- btn-success btn-lg" id = "addgoal" onclick="newGoal();">Add New Goal</button>-->
-            <!--</div>-->
-
-
-            <label for = "tomorrow">tomorrow
+            <a href="#portfolio"><h3>
+                <label for = "tomorrow" >tomorrow</label>
                 <input type = "radio" id = "tomorrow" name="filter" value = "tomorrow" onclick="filterGoals();">
 
-            </label>
             <label for = "this week">this week
                 <input type = "radio" id = "this week" name="filter" value = "this week" onclick="filterGoals();">
             </label>
@@ -24,108 +166,75 @@
             </label>
             <label for = "showall">show all
                 <input type = "radio" id = "showall" name="filter" value = "showall" onclick="getAll();">
-            </label>
+            </label></h3></a>
 
             <br><br>
 
-
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <!--<div id= "activelabel" class="label"> <h4 class = "link">Active Goals</h4> </div>-->
+        <div class="col">
 
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h3>Active Goals</h3>
-                    <hr class="star-primary">
+            <div class="col-lg-8 col-lg-offset-2">
+                <!--<div id= "activelabel" class="label"> <h4 class = "link">Active Goals</h4> </div>-->
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h3>Active</h3>
+                        <hr class="star-primary">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <ul>
+                            {% for event in events['active'] %}
+                                 <li class="collapsible">
+                                     <!--<input type="checkbox" class="check" id = "chckHead" name = "chckHead" onclick="markComp({{event}});" />-->
+                                     <div class="inputGroup">
+                                        <input id="chckHead" class = "check" name="chckHead" type="checkbox" onclick="markComp({{event}});"/>
+                                        <label for="chckHead"><span style="font-size:2em;">{{ event['event_name']}} </span></label>
+                                         <span style="font-size:2em;" class="glyphicon glyphicon-edit " id = "editgoal" onclick="editGoal({{event}});" ></span>
+                                         <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
+                                     </div>
+
+                                 </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </div>
+    <!--</div>-->
 
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <ul>
-                        {% for event in events['active'] %}
-                             <li>
-                                 <input type="checkbox" class="check" id = "chckHead" name = "chckHead" onclick="markComp({{event}});" />
-                                 <span style="font-size:3em;">{{ event['event_name']}} </span>
-                                 <span style="font-size:2em;" class="glyphicon glyphicon-edit" id = "editgoal" onclick="editGoal({{event}});"></span>
-
-                                 <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
-
-                             </li>
-                        {% endfor %}
-                    </ul>
+    <!--<div class="row">-->
+        <div class="col">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h3>Completed</h3>
+                        <hr class="star-primary">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <ul>
+                            {% for event in events['completed'] %}
+                                 <li class = "collapsible">
+                                    <div class="inputGroup">
+                                        <span style="font-size:2em;">{{ event['event_name']}} </span>
+                                        <span style="font-size:2em;" class="	glyphicon glyphicon-refresh " id = "readd" name = "readd" onclick="" ></span>
+                                        <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "delcomp" onclick="deleteGoal({{event}});"></span>
+                                    </div>
+                                 </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h3>Completed Goals</h3>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <ul>
-                        {% for event in events['completed'] %}
-                             <li>
-
-                                <span style="font-size:3em;">{{ event['event_name']}} </span>
-
-                                <span style="font-size:2em;" class="	glyphicon glyphicon-refresh " id = "readd" name = "readd" onclick="" ></span>
-                                <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "delcomp" onclick="deleteGoal({{event}});"></span>
-
-                             </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-           <div id="duetodaydiag">
-              {% for event in events['duetoday'] %}
-                    <label id="notlabel"></label>
-              {% endfor %}
-            </div>
-
-
-            <form class= "editdiag" id="editdiag" title="Edit Goal">
-
-                <input type="text" placeholder="Event Name" id="edit_eventname" class="edit_eventname"> <br><br>
-                <input type="datetime-local" placeholder="Event Deadline" id="edit_eventdeadline" class="edit_eventdeadline"><br><br>
-
-
-                <select id = "edit_eventpriority" class = "eventpriority"><br><br>
-                      <option value = "chem" > chem </option>
-                      <option value = "ther" > ther </option>
-                      <option value = "nucl"> nucl </option>
-                </select>
-
-                <select id = "edit_eventreminder" class = "eventreminder"><br><br>
-                    <option value = "daily"> daily </option>
-                    <option value = "weekly"> weekly </option>
-                    <option value = "monthly"> monthly </option>
-                 </select>
-
-                <input type="datetime-local" id="eventcreate" name="eventcreate" class="hidden eventcreate"><br><br>
-                <input type="text" id="mongid" name="mongid" class= "hidden mongid">
-                <div type="button" id = "addtodo" class="btn btn-success" onclick="newTodo();"></div>
-
-
-                  <ul id = "todolist"></ul>
-                      <div id = "todoentry" class="col-sm-4 buttonwrapper">
-                            <input type="text" id="todo" name="todo"/>
-                            <div type = "button" class="btn btn-success" id = "savetodo" onclick="saveTodo();" >add</div>
-                            <div type = "button" class="btn btn-warning" id = "canceltodo" onclick="cancelTodo();" >cancel</div>
-                      </div>
-            </form>
-
-           {% endblock %}
+{% endblock %}
 

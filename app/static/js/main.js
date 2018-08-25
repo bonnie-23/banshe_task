@@ -53,12 +53,6 @@ function newGoal() {
                         var temp =JSON.parse(events.replace(/\'/g,'\"'))
                         var active_events = temp['active']
 
-                        for (i in active_events){
-                            if (active_events[i]['event_name'] ==  $("#edit_eventname").val()){
-                                alert("That event already exists")
-                            }
-
-                        }
                         saveGoal("save");
                     },
                     "cancel": function () {
@@ -76,26 +70,27 @@ function newGoal() {
 
 
 function newTodo(){
-    var todo = document.getElementById("todoentry");
-    todo.style.visibility = "visible";
+    var todoentry = document.getElementById("todoentry");
+    todoentry.style.visibility = "visible";
+//    todo.style.display = "block";
 
-    var addbtn = document.getElementById("addtodo");
-    addbtn.style.visibility = "hidden";
+//    var addbtn = document.getElementById("addtodo");
+//    addbtn.style.visibility = "hidden";
 }
 
-function saveTodo() {
-    var todolist = []
 
-    if ($("#todo").val()!=''){
-        todolist.push($("#todo").val())
-        $("#todolist").append(
-            $('<li value =' +$("#todo").val()+' >').html($("#todo").val())
-        )
 
-        $("#todo").val('')
+
+function getTodolist() {
+
+        var todolist = [];
+        $('#todolist li').each(function(){
+            todolist.push($(this).attr('value'));
+        });
+        return todolist
     }
-
 }
+
 
 //Select an event in active or completed lists
 function markComp(event) {
@@ -108,10 +103,11 @@ function markComp(event) {
     });
 }
 
+//edit active selected goal
 function editGoal(event) {
-    //edit active selected goal
-    deadline = new Date(event['event_deadline'] + " UTC")
 
+    console.log(event)
+    deadline = new Date(event['event_deadline'] + " UTC")
 
     var fmt = 'YYYY-MM-DDTHH:mm'
     var editdeadline = event['event_deadline']
@@ -121,26 +117,27 @@ function editGoal(event) {
     var date = new Date()
 
     $("#editdiag").dialog({
+
+
         autoOpen: true,
         resizable: false,
         modal: true,
         width: 400,
         height:350,
         open: function () {
+
+             $('#addgoal').hide();
              var form = document.getElementById("editdiag");
-             form.style.visibility = "visible";
              $('#edit_eventname').val(event['event_name']);
              $('#edit_eventdeadline').val(dead.format(fmt));
              $('#edit_eventpriority').val(event['event_priority']);
              $('#edit_eventreminder').val(event['event_reminder']);
-             $('#eventcreate').val(create.format(fmt));
-             $('#mongid').val(event['mongo_id']);
 
         },
         close: getAll,
         buttons: {
             "save": function () {
-                saveGoal("edit");
+                saveGoal("edit",create.format(fmt),event['mongo_id']);
                 getAll();
             },
             "cancel": function () {
@@ -149,8 +146,6 @@ function editGoal(event) {
         }
     });
 }
-
-
 
 
 
@@ -178,20 +173,18 @@ function deleteGoal(event) {
 
 
 //commit changes to goal
-function saveGoal(action,todolist) {
+function saveGoal(action,create,mongo_id) {
     var name = document.getElementById("edit_eventname").value
     var deadline = document.getElementById("edit_eventdeadline").value
     var todolist = getTodolist()
     var priority = document.getElementById("edit_eventpriority").value
     var reminder = document.getElementById("edit_eventreminder").value
-    var create = document.getElementById("eventcreate").value
-    var monid = document.getElementById("mongid").value
+
 
     var dict = {}
     var currentdate = new Date().setSeconds(0,0)
 
 
-    console.log(todolist[0])
     if(name == "" || deadline == ""){
             alert("blank values")
         }
@@ -204,7 +197,7 @@ function saveGoal(action,todolist) {
             dict['event_deadline'] = deadline
             dict['event_priority'] = priority
             dict['event_reminder'] = reminder
-            dict['mongo_id'] = monid
+            dict['mongo_id'] = mongo_id
             dict['event_createdate'] = create
 
             $.ajax({
@@ -229,22 +222,23 @@ function saveGoal(action,todolist) {
                   contentType: "application/json;charset=UTF-8",
                   dataType: "JSON",
                   data: JSON.stringify(dict),
-                  success: function(data){
-                    alert(data);
-                  }
             });
 
         }
         getAll();
     }
 
-    function getTodolist() {
+    function saveTodo() {
+        var todolist = []
 
-        var todolist = [];
-        $('#todolist li').each(function(){
-            todolist.push($(this).attr('value'));
-        });
-        return todolist
+        if ($("#todo_name").val()!=''){
+            todolist.push($("#todo_name").val())
+            $("#todolist").append(
+                $('<li value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
+            )
+            $("#todo").val('')
+        }
+
     }
 }
 
@@ -311,18 +305,6 @@ function clearForm(formname) {
 //check every 60 seconds if deadline for goals have arrived
 function loadPage() {
 
-    //Hide Edit Form
-    var editform = document.getElementById("editdiag");
-    editform.style.visibility = "hidden";
-    editform.style.display ="none";
-
-
-    //Hide today list
-    var todaylist = document.getElementById("duetodaydiag")
-    todaylist.style.visibility = "hidden";
-    todaylist.style.display ="none";
-
-
     //Hide todoentry
     var todoentry = document.getElementById("todoentry");
     todoentry.style.visibility = "hidden";
@@ -338,29 +320,13 @@ function loadPage() {
 //    remFrequency();
 
     //call countdown dialog only once
-    $("#events").one('click', function () {
-        countToday();
-    });
+    gettodayGoals()
+    function gettodayGoals(){
+        for(i=0; i < today_events.length; i++) {
+            $("#duetoday").append(
+                countdownTimer(today_events[i]['event_name'],today_events[i]['event_deadline'])
+            )
 
-
-    //Display dialog for goals countdown
-    function countToday(){
-        if (today_events.length>0){
-            $('<ul id="newDialogText"></ul>').dialog({
-                autoOpen: true,
-                resizable: false,
-                height: "auto",
-                title: 'due today',
-                modal: true,
-                open: function () {
-
-                   for(i=0; i < today_events.length; i++) {
-                        $("#newDialogText").append(
-                            countdownTimer(today_events[i]['event_name'],today_events[i]['event_deadline'])
-                        )
-                    }
-                }
-            });
         }
     }
 
@@ -384,7 +350,7 @@ function loadPage() {
                         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+                        $('#_' + new_id).append("<hr />")
                         $('#_' + new_id).html(eventname + ": " + hours + "h " + minutes + "m " + seconds + "s ")
 
                     }
@@ -394,8 +360,6 @@ function loadPage() {
             }, 1000);
         };
     }
-
-
 
     //Check each goal every 60s to see if deadline has arrived
     var intervalID = setInterval(getDue,60000);
@@ -444,8 +408,6 @@ function loadPage() {
         clearInterval(intervalID)
     };
 
-
-
     //show notification based on reminder frequency
     function remFrequency() {
 
@@ -489,6 +451,29 @@ function loadPage() {
 }
 
 
+    //toggle collapsible for todolist
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            if (this.children){
+                var content = this.children;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                }
+                else {
+                  content.style.display = "block";
+                }
+            }
+
+          });
+    }
+
+}
+
+
 //display notification
 function showNotification(name,message) {
 
@@ -505,18 +490,17 @@ function showNotification(name,message) {
         },
         buttons: {
 
-                    "Delete": function() {
-                        deleteGoal(mongo_id);
-                    },
-                    "Mark Complete": function() {
-                        checkGoal(goal);
+            "Delete": function() {
+                deleteGoal(mongo_id);
+            },
+            "Mark Complete": function() {
+                checkGoal(goal);
 
-                    }
+            }
 
         }
     });
 }
-
 
 
 

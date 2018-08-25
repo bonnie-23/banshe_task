@@ -21,6 +21,8 @@
     <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
     <!--My reference files-->
     <script src="/static/js/main.js"></script>
@@ -35,11 +37,10 @@
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
 
-  
+
     <!--Moment for dates-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <!--Montserrat font embed-->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,7 +70,7 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#portfolio">Manage Goals</a>
+                        <a href="#goals">Manage Goals</a>
                     </li>
                     <li class="page-scroll">
                         <a href="#about">Todays Goals</a>
@@ -89,19 +90,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <!--<img class="img-responsive" src="img/profile.png" alt="">-->
+                    <img class="img-responsive" src="/img/earth.jpg" alt="">
                     <div class="intro-text">
-                        <span class="name">Start Bootstrap</span>
+                        <span class="name">Banshe Goals</span>
                         <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
+                        <span class="skills">List - Check - Done</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Contact Section -->
-    <section id="contact">
+    <!-- Goal Entry Section -->
+    <section id="goalentry">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -112,9 +113,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
 
-                  <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                    <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form name="sentMessage" id="editdiag" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Goal Name</label>
@@ -132,12 +131,12 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Goal Priority</label>
-                                <!--<input type="tel" class="form-control" placeholder="Phone Number" id="phone" required data-validation-required-message="Please enter your phone number.">-->
-                                <select id = "edit_eventpriority"  class="form-control" required data-validation-required-message="Please enter your phone number." >
+                                <select id = "edit_eventpriority"  class="form-control select" required data-validation-required-message="Please enter your phone number." >
                                     <option value = "chem" > chem </option>
                                     <option value = "ther" > ther </option>
                                     <option value = "nucl"> nucl </option>
                                 </select>
+                                <div class="select__arrow"></div>
                               <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -155,20 +154,40 @@
                         </div>
                         <br>
                         <div id="success"></div>
-                        <div class="row">
+                        <div class="row control-group">
                             <div class="form-group col-xs-12">
-                                <button id = "addtodo" onclick="newTodo();" class="btn btn-success btn-lg">Save</button>
+                                <button id = "addgoal" onclick="saveGoal('save');" class="btn btn-success btn-lg">Save</button>
+                                <button type = "button" id = "addtodo" onclick="newTodo();" class="btn btn-success btn-lg">Add Todo</button>
                             </div>
                         </div>
+                    </form>
+
+                    <!--todo list entry-->
+                    <ul id = "todolist"></ul>
+                    <form id="todentry" novalidate>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Todo</label>
+                                <input type="text" class="form-control" placeholder="Todo Name" id="todo_name" required data-validation-required-message="Please enter a name for this goal.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12">
+                                <button class="btn btn-success btn-lg" id = "savetodo" onclick="saveTodo();" >add</button>
+                                <button class="btn btn-warning btn-lg" id = "canceltodo" onclick="cancelTodo();" >cancel</button>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Grid Section -->
-    <section id="portfolio">
-        <div class="container p-3 mb-2 bg-info">
+    <!-- Manage Goals Section -->
+    <section id="goals">
+        <div class="container p-3 mb-2 bg-secondary">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2>Manage Your Goals</h2>
@@ -176,90 +195,28 @@
                 </div>
                 {% block content %} {% endblock %}
             </div>
-            <div class="row">
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/cabin.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/cake.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/circus.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/game.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/safe.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <!--<img src="img/portfolio/submarine.png" class="img-responsive" alt="">-->
-                    </a>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Todays Goals Section -->
     <section class="success" id="about">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>About</h2>
+                    <h2>Today's Goals</h2>
                     <hr class="star-light">
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p>Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional LESS stylesheets for easy customization.</p>
+                <div class="col-lg-12 text-center">
+                    <h3><ul id="duetoday">
+
+                    </ul></h3>
                 </div>
-                <div class="col-lg-4">
-                    <p>Whether you're a student looking to showcase your work, a professional looking to attract clients, or a graphic artist looking to share your projects, this template is the perfect starting point!</p>
-                </div>
+
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
+                        <i class="glyphicon glyphicon-time"></i> Show Countdown
                     </a>
                 </div>
             </div>
@@ -560,7 +517,7 @@
 
     <!-- Contact Form JavaScript -->
     <script src="/static/js/jqBootstrapValidation.js"></script>
-    <script src="/static/js/contact_me.js"></script>
+    <!--<script src="/static/js/contact_me.js"></script>-->
 
     <!-- Theme JavaScript -->
     <script src="/static/js/freelancer.min.js"></script>

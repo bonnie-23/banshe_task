@@ -71,6 +71,7 @@ header {
   text-align: center;
   background: #18BC9C;
   color: white;
+  position: fixed;
 }
 header .container {
   padding-top: 100px;
@@ -503,3 +504,142 @@ fieldset[disabled] .btn-success.active {
   opacity: 0;
   display: none;
 }
+
+#btnaddgoal,
+#btnaddtodo{
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+
+
+.inputGroup {
+    background-color: #fff;
+    display: block;
+    margin: 10px 0;
+    position: relative;
+
+    label {
+      padding: 12px 30px;
+      width: 100%;
+      display: block;
+      text-align: left;
+      color: #3C454C;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: color 200ms ease-in;
+      overflow: hidden;
+
+      &:before {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        content: '';
+        background-color: #5562eb;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale3d(1, 1, 1);
+        transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        opacity: 0;
+        z-index: -1;
+      }
+
+      &:after {
+        width: 32px;
+        height: 32px;
+        content: '';
+        border: 2px solid #D1D7DC;
+        background-color: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+        background-repeat: no-repeat;
+        background-position: 2px 3px;
+        border-radius: 50%;
+        z-index: 2;
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: all 200ms ease-in;
+      }
+    }
+
+    input:checked ~ label {
+      color: #fff;
+
+      &:before {
+        transform: translate(-50%, -50%) scale3d(56, 56, 1);
+        opacity: 1;
+      }
+
+      &:after {
+        background-color: #54E0C7;
+        border-color: #54E0C7;
+      }
+    }
+
+    input {
+      width: 32px;
+      height: 32px;
+      order: 1;
+      z-index: 2;
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      visibility: hidden;
+    }
+  }
+
+
+div.select {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 100%;
+    height: 10px;
+
+    cursor: pointer;
+    padding: 10px 15px;
+    outline: 0;
+    border: 0;
+    border-radius: 5;
+    background: $color--light-grey;
+    color: $color--dark-grey;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &::-ms-expand;
+      display none;
+
+    &:hover;
+    &:focus;
+      color: $color--black;
+      background: $color--grey;
+
+    &:disabled;
+      opacity: 0.5;
+      pointer-events: none;
+}
+.select__arrow
+  position absolute
+  top 16px
+  right 15px
+  width 0
+  height 0
+  pointer-events none
+  border-style solid
+  border-width 8px 5px 0 5px
+  border-color $color--dark-grey transparent transparent transparent
+
+  .select select:hover ~ &
+  .select select:focus ~ &
+    border-top-color $color--black
+
+  .select select:disabled ~ &
+    border-top-color $color--grey
