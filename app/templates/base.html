@@ -51,7 +51,7 @@
 
 </head>
 
-<body id="basepage" class="index" data-events = "{{events}}" onload="javascript:loadPage();">
+<body id="basepage" class="index" data-events = "{{events}}" onload="javascript:loadActions();">
     <!-- Navigation -->
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
@@ -90,7 +90,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <img class="img-responsive" src="/img/earth.jpg" alt="">
+                    <!--<img class="img-responsive" src="/img/earth.jpg" alt="">-->
                     <div class="intro-text">
                         <span class="name">Banshe Goals</span>
                         <hr class="star-light">
@@ -160,8 +160,10 @@
                                 <button type = "button" id = "addtodo" onclick="newTodo();" class="btn btn-success btn-lg">Add Todo</button>
                             </div>
                         </div>
+                        <div class="row control-group">
+                            <ul class= "todolist" id = "todolist"></ul>
+                        </div>
 
-                        <ul id = "todolist"></ul>
                         <div id= "todoentry" class="col control-group">
                             <div class="row control-group">
                                 <div class="form-group col-xs-12 floating-label-form-group controls">
@@ -174,7 +176,7 @@
                             <div class="row control-group">
                                 <div class="form-group col-xs-12">
                                     <button type = "button" class="btn btn-success btn-lg" id = "savetodo" onclick="addTodo();" >add</button>
-                                    <button class="btn btn-warning btn-lg" id = "canceltodo" onclick="cancelTodo();" >cancel</button>
+                                    <button type = "button" class="btn btn-warning btn-lg" id = "canceltodo" onclick="cancelTodo();" >cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +211,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h3><ul id="duetoday">
+                    <h3><ul class= "todaygoals" id="duetoday">
 
                     </ul></h3>
                 </div>

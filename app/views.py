@@ -203,13 +203,13 @@ def update_goal():
              'event_priority': request.json['event_priority'],
              'event_status': "False",
              'event_deadline': fixdate(request.json['event_deadline']),
-             'event_todolist': "[]",
+             'event_todolist': request.json['event_todolist'],
              'event_reminder': request.json['event_reminder'],
              'event_createdate': fixdate(request.json['event_createdate'])
             })
-
+        print( request.json['event_todolist'] )
         eventrecord.update(request.json['mongo_id'], eventrecord)
-        return redirect(url_for('get_all_goals', page='start'))
+    return redirect(url_for('get_all_goals', page='start'))
 
 
 '''

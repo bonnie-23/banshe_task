@@ -113,12 +113,13 @@ code {
   padding: 0 8px;
 }
 
-.goal {
-  list-style: none;
-  display=none;
-}
-.collapsible ul{
 
+li.collapsible ul{
+
+    font-size: 20px;
+    background-color: #9AA3AC;
+    border-bottom-right-radius:10px;
+    border-bbottom-left-radius:10px;
 }
 
 .collapsible {
@@ -131,6 +132,8 @@ code {
     text-align: left;
     outline: none;
     font-size: 12px;
+    list-style: none;
+    display=none;
     border-top-right-radius:10px;
     border-top-left-radius:10px;
     border-bottom-right-radius:10px;
@@ -204,7 +207,10 @@ code {
                                      <ul>
                                          {% if event['event_todolist']|length >0 %}
                                             {% for todo in event['event_todolist']%}
-                                                <li> {{todo}} </li>
+                                                <li id="todo" value="{{todo}}">
+                                                    {{todo}}
+                                                    <span style="font-size:1em;" class="glyphicon glyphicon-trash" id = "deletetodo" onclick="deleteTodo({{event}});"></span>
+                                                </li>
                                             {%endfor%}
                                          {% endif %}
                                      </ul>
@@ -237,6 +243,13 @@ code {
                                         <span style="font-size:2em;" class="	glyphicon glyphicon-refresh " id = "readd" name = "readd" onclick="" ></span>
                                         <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "delcomp" onclick="deleteGoal({{event}});"></span>
                                     </div>
+                                    <ul>
+                                         {% if event['event_todolist']|length >0 %}
+                                            {% for todo in event['event_todolist']%}
+                                                <li> {{todo}} </li>
+                                            {%endfor%}
+                                         {% endif %}
+                                    </ul>
                                  </li>
                             {% endfor %}
                         </ul>

@@ -501,7 +501,7 @@ fieldset[disabled] .btn-success.active {
   z-index: 1052;
 }
 .portfolio-modal .modal-backdrop {
-  opacity: 0;
+  opacity: 20;
   display: none;
 }
 
@@ -510,8 +510,6 @@ fieldset[disabled] .btn-success.active {
     display: inline-block;
     vertical-align: top;
 }
-
-
 
 
 .inputGroup {
