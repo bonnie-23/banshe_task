@@ -100,14 +100,17 @@ function dispTodolist(todolist,id){
         for (i=0; i<todolist.length;i++ ){
             var new_id = Math.floor((Math.random() * 999) + 1)
 
+//            $('#_' + new_id).click(function() {
+//                todolist = todolist.splice(i,1)
+//                console.log(todolist.splice(i,1))
+//            });
+
             $('#todolist').append(
                 $('<input>').val(todolist[i]),
                 $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id=_' +new_id+ '>')
-            )
+            );
 
-            $('#_' + new_id).click(function() {
-                console.log(todolist.splice(i,1))
-            });
+
         }
     }
 }
@@ -541,10 +544,3 @@ function showNotification(name,message) {
 }
 
 
-
-//app.on('ready', createWindow)
-//app.on('activate', function () {
-//  if (mainWindow === null) {
-//    createWindow()
-//  }
-//})
