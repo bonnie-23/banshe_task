@@ -1,28 +1,3 @@
-//
-//const {app, BrowserWindow, Menu} = require('electron')
-//const path = require('path')
-//const url = require('url')
-//const shell = require('electron').shell
-//const $ = require('jquery')
-//
-//
-//
-//let mainWindow
-//function createWindow () {
-//  mainWindow = new BrowserWindow({width: 450, height: 700})
-//  mainWindow.setMenu(null)
-//  mainWindow.loadURL('http://127.0.0.1:5000/getallgoals/start')
-//  mainWindow.on('closed', function () {
-//    mainWindow = null
-//  })
-//
-//mainWindow.loadURL('/index.html')
-//mainWindow.webContents.openDevTools()
-//}
-
-
-
-
 function addNew() {
     location.href = '/newgoal'
 }
@@ -69,21 +44,68 @@ function newGoal() {
 
 
 
-function newTodo(){
-    var todoentry = document.getElementById("todoentry");
-    todoentry.style.visibility = "visible";
+function newTodo(todolist){
+    if ($('#addtodo').html() == 'Add Todo'){
+        $('#todoentry').show();
+    }
+    else if (($('#addtodo').html() == 'add/edit todo')){
+        $('#todoentry').show();
+        $('#todolist').show();
+    }
+
 }
 
 function addTodo() {
     if ($("#todo_name").val()!=''){
-        $("#todolist").append(
-            $('<li value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
-        )
+        if ($('#addtodo').html() =='add/edit todo'){
+            $("#todolist").append(
+                $('<input>').val($("#todo_name").val())
+            )
+        }
+        else if ($('#addtodo').html() =='Add Todo') {
+            $("#todolist").append(
+                $('<li style="font-size:20px;background-color: #9AA3AC;border-bottom-right-radius:10px;border-bbottom-left-radius:10px;" value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
+            )
+        }
         $("#todo_name").val('')
     }
 }
 
+function cancelTodo() {
+    if ($('#addtodo').html() =='Add Todo'){
+        $('#todolist').empty();
+        $('#todoentry').hide();
 
+    }
+    else if ($('#addtodo').html() =='add/edit todo'){
+        $('#todoentry').hide();
+        $('#todolist').hide();
+    }
+
+}
+
+function deleteTodo(event) {
+    todolist =[]
+    $('#todo').remove()
+
+    $('#todolist li').each(function(){
+        todolist.push($(this).text());
+            });
+    event['event_todolist'] =todolist
+    editdiag = editGoal(event)
+
+
+}
+
+function dispTodolist(todolist){
+    if (todolist.length>0) {
+        for (i=0; i<todolist.length;i++ ){
+            $('#todolist').append(
+                $('<input>').val(todolist[i])
+            )
+        }
+    }
+}
 
 
 //mark selected goal as complete
@@ -96,10 +118,9 @@ function markComp(event) {
     });
 }
 
-//edit active selected goal
+//display active goal to be edited
 function editGoal(event) {
 
-    console.log(event)
     deadline = new Date(event['event_deadline'] + " UTC")
 
     var fmt = 'YYYY-MM-DDTHH:mm'
@@ -110,28 +131,37 @@ function editGoal(event) {
     var date = new Date()
 
     $("#editdiag").dialog({
-
-
         autoOpen: true,
         resizable: false,
         modal: true,
         width: 400,
-        height:350,
+        height:750,
+        title: "Edit Goal",
         open: function () {
 
              $('#addgoal').hide();
-             var form = document.getElementById("editdiag");
+             $('#todoentry').hide();
+             $('#todolist').hide();
+             $('#addtodo').html('add/edit todo');
+
              $('#edit_eventname').val(event['event_name']);
              $('#edit_eventdeadline').val(dead.format(fmt));
              $('#edit_eventpriority').val(event['event_priority']);
              $('#edit_eventreminder').val(event['event_reminder']);
+
+            $('#canceltodo').click(function() {
+                $('#todolist').empty();
+            });
+            $('#addtodo').click(function() {
+                dispTodolist(event['event_todolist']);
+            });
+
 
         },
         close: getAll,
         buttons: {
             "save": function () {
                 saveGoal("edit",create.format(fmt),event['mongo_id']);
-                getAll();
             },
             "cancel": function () {
                 $(this).dialog("close");
@@ -163,7 +193,7 @@ function deleteGoal(event) {
 }
 
 
-//commit changes to goal
+//save data from form to MongoDb
 function saveGoal(action,create,mongo_id) {
     var name = document.getElementById("edit_eventname").value
     var deadline = document.getElementById("edit_eventdeadline").value
@@ -186,6 +216,7 @@ function saveGoal(action,create,mongo_id) {
         if (action=="edit") {
             dict['event_name'] = name
             dict['event_deadline'] = deadline
+            dict['event_todolist'] = todolist
             dict['event_priority'] = priority
             dict['event_reminder'] = reminder
             dict['mongo_id'] = mongo_id
@@ -220,10 +251,17 @@ function saveGoal(action,create,mongo_id) {
 
     function getTodolist() {
         var todolist = [];
-        $('#todolist li').each(function(){
-            todolist.push($(this).attr('value'));
-        });
-        console.log(todolist)
+
+        if ($('#addtodo').html() =='Add Todo'){
+            $('#todolist li').each(function(){
+                todolist.push($(this).html());
+            });
+        }
+        else if ($('#addtodo').html() =='add/edit todo'){
+            $('#todolist input').each(function(){
+                todolist.push($(this).val());
+            });
+        }
         return todolist
     }
 }
@@ -233,8 +271,8 @@ function saveGoal(action,create,mongo_id) {
 //Mark a goal as complete
 function checkGoal(dict){
 
-    chck = document.getElementById("chckHead")
-    dict["event_status"]= JSON.stringify(true)
+    check = $('input:checkbox[name=chckHead]').is(':checked')
+    dict["event_status"]= JSON.stringify(check)
 
     $.ajax({
           url: "/togglegoal",
@@ -289,11 +327,10 @@ function clearForm(formname) {
 
 
 //check every 60 seconds if deadline for goals have arrived
-function loadPage() {
+function loadActions() {
 
-    //Hide todoentry
-    var todo = document.getElementById("todoentry");
-    todo.style.visibility = "hidden";
+    //Hide todolist entry form
+    $('#todoentry').hide()
 
 
     //Get events from MongoDB
@@ -305,7 +342,7 @@ function loadPage() {
     //check reminder frequency
 //    remFrequency();
 
-    //call countdown dialog only once
+    //display countdown for goals due today
     gettodayGoals()
     function gettodayGoals(){
         for(i=0; i < today_events.length; i++) {
@@ -432,7 +469,6 @@ function loadPage() {
             }
         }
     }
-
 
 
     //toggle collapsible for todolist

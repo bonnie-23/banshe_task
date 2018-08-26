@@ -79,7 +79,7 @@ class Event(object):
                 'event_name': newgoal.name,
                 'event_priority': newgoal.priority,
                 'event_status': newgoal.status,
-                'event_todolist': str(self.get_todolist(goalid)),
+                'event_todolist': self.todolist,
                 'event_reminder': newgoal.reminder,
                 'event_deadline': str(newgoal.deadline)}
             mongo.update(goalid,modgoal,'event')
