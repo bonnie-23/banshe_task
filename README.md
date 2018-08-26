@@ -3,7 +3,7 @@
 
 To install Banshe Task Manager:
 -------------------------------------------
-Banshe requires an installation of Python to run.
+Banshe requires an installation of Python and an instance of MongoDB server to run.
 
 1. Install Flask and pymongo modules using pip
 2. Start local MongoDB server
