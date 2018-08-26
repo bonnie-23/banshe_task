@@ -495,6 +495,12 @@ function loadActions() {
           });
     }
 
+    $('.collapsible').each(function () {
+        console.log($('.collapsible ul').length)
+        $('#todocount').html($('this ul').length)
+    });
+
+
 }
 
 

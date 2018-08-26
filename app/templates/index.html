@@ -175,6 +175,13 @@ input[type=checkbox] {
   margin-right: 5px;
   margin-left: 5px;
 }
+
+.todocount{
+  vertical-align:middle;
+  margin-right:-15px;
+  margin-top: -20px;
+  font-size:13px;
+}
 </style>
 
 
@@ -219,17 +226,17 @@ input[type=checkbox] {
 
                 <div class="row">
                     <div class="col-lg-12 text-center">
-                        <ul class ="goal">
+                        <ul class ="goal" >
                             {% for event in events['active'] %}
                                  <li class="collapsible">
-                                     <!--<input type="checkbox" class="check" id = "chckHead" name = "chckHead" onclick="markComp({{event}});" />-->
+
                                      <div class="inputGroup">
                                         <input id="chckHead" class = "check" name="chckHead" type="checkbox" onclick="markComp({{event}});"/>
                                         <label for="chckHead"><span style="font-size:2em;">{{ event['event_name']}} </span></label>
                                          <span style="font-size:2em;" class="glyphicon glyphicon-edit" id = "editgoal" onclick="editGoal({{event}});" ></span>
                                          <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
                                      </div>
-                                     <ul>
+                                     <ul id = 'tlist' class = "tlist">
                                          {% if event['event_todolist']|length >0 %}
                                             {% for todo in event['event_todolist']%}
                                                 <li id="todo" value="{{todo}}">
@@ -239,9 +246,11 @@ input[type=checkbox] {
                                             {%endfor%}
                                          {% endif %}
                                      </ul>
-
+                                     <span id = "todocount" class="badge badge-primary badge-pill todocount"></span>
                                  </li>
+
                             {% endfor %}
+
                         </ul>
                     </div>
                 </div>
