@@ -100,10 +100,10 @@ function dispTodolist(todolist,id){
         for (i=0; i<todolist.length;i++ ){
             var new_id = Math.floor((Math.random() * 999) + 1)
 
-            $('#_' + new_id).click(function() {
-                todolist = todolist.splice(i,1)
-                console.log(todolist.splice(i,1))
-            });
+//            $('#_' + new_id).click(function() {
+//                todolist = todolist.splice(i,1)
+//                console.log(todolist.splice(i,1))
+//            });
 
             $('#todolist').append(
                 $('<input>').val(todolist[i]),
