@@ -272,8 +272,9 @@ input[type=checkbox] {
                             {% for event in events['completed'] %}
                                  <li class = "collapsible">
                                     <div class="inputGroup">
+                                        <input id="compchck" class = "check hidden" name="compchck" type="checkbox" />
                                         <span style="font-size:2em;">{{ event['event_name']}} </span>
-                                        <span style="font-size:2em;" class="	glyphicon glyphicon-refresh " id = "readd" name = "readd" onclick="" ></span>
+                                        <span style="font-size:2em;" class="glyphicon glyphicon-refresh " id = "readd" onclick="markComp({{event}});" ></span>
                                         <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "delcomp" onclick="deleteGoal({{event}});"></span>
                                     </div>
                                     <ul>
