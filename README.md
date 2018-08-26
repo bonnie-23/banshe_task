@@ -13,7 +13,9 @@ Create a goal, select its deadline, priority and reminder frequency.
 Alert dialogue pops up when deadline arrives where you can delete the goal or mark it as complete, or close to keep the goal and edit deadline later.
 Add a todolist for each goal.
 Click on a goal to see the todolist needed for achieving it.
-Edit each goal and its todolist. 
+Edit each goal and its todolist.
+Once goal is done mark as complete. 
+Mark completed goal as incomplete and edit.
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 To install Banshe Task Manager:
@@ -30,6 +32,5 @@ Banshe requires an installation of Python and an instance of MongoDB server to r
 Features still in development:
 ------------------------------------------------------------------------------------------------------------------------------------------
 Delete todo item
-mark completed goal as incomplete
 Set reminder frequency and get reminders at specified intervals daily, weekly, monthly until deadline arrives
-Display bage with count of todo items for each goal
+Display badge with count of todo items for each goal
