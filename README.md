@@ -7,12 +7,13 @@ With Banshe you can:
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 See all active and completed goals created in Banshe. 
-see a countdown timer of your tasks due today 
-Filter goals due tomorrow, next week or next month
+see a countdown timer of your tasks due today. 
+Filter goals due tomorrow, next week or next month.
 Create a goal, select its deadline, priority and reminder frequency.
-Add a todolist for each goal
-Click on a goal to see the todolist needed for achieving it
-edit each goal and the 
+Alert dialogue pops up when deadline arrives where you can delete the goal or mark it as complete, or close to keep the goal and edit deadline later.
+Add a todolist for each goal.
+Click on a goal to see the todolist needed for achieving it.
+Edit each goal and its todolist. 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 To install Banshe Task Manager:
