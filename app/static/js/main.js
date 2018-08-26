@@ -91,18 +91,23 @@ function deleteTodo(event) {
     $('#todolist li').each(function(){
         todolist.push($(this).text());
             });
-    event['event_todolist'] =todolist
-    editdiag = editGoal(event)
-
+    event['event_todolist'] = todolist
 
 }
 
-function dispTodolist(todolist){
+function dispTodolist(todolist,id){
     if (todolist.length>0) {
         for (i=0; i<todolist.length;i++ ){
+            var new_id = Math.floor((Math.random() * 999) + 1)
+
             $('#todolist').append(
-                $('<input>').val(todolist[i])
+                $('<input>').val(todolist[i]),
+                $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id=_' +new_id+ '>')
             )
+
+            $('#_' + new_id).click(function() {
+                console.log(todolist.splice(i,1))
+            });
         }
     }
 }
@@ -130,6 +135,8 @@ function editGoal(event) {
     var create = moment.utc(event['event_createdate'],fmt)
     var date = new Date()
 
+
+
     $("#editdiag").dialog({
         autoOpen: true,
         resizable: false,
@@ -150,12 +157,13 @@ function editGoal(event) {
              $('#edit_eventreminder').val(event['event_reminder']);
 
             $('#canceltodo').click(function() {
+                $('#addtodo').show()
                 $('#todolist').empty();
             });
             $('#addtodo').click(function() {
+                $(this).hide()
                 dispTodolist(event['event_todolist']);
             });
-
 
         },
         close: getAll,
@@ -494,6 +502,12 @@ function loadActions() {
 
           });
     }
+
+    $('.collapsible').each(function () {
+        console.log($('.collapsible ul').length)
+        $('#todocount').html($('this ul').length)
+    });
+
 
 }
 
