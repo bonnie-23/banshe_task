@@ -186,8 +186,8 @@ function editGoal(event) {
     });
 }
 
+//show confirm delete dialog
 function deleteGoal(event) {
-    //confirm delete dialog
     $(function() {
         $( '<div>' ).dialog({
             autoOpen: true,
