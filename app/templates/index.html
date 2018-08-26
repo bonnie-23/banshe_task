@@ -241,7 +241,6 @@ input[type=checkbox] {
                                             {% for todo in event['event_todolist']%}
                                                 <li id="todo" value="{{todo}}">
                                                     {{todo}}
-                                                    <span style="font-size:1em;" class="glyphicon glyphicon-trash" id = "deletetodo" onclick="deleteTodo({{event}});"></span>
                                                 </li>
                                             {%endfor%}
                                          {% endif %}
