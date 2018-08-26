@@ -116,8 +116,13 @@ function dispTodolist(todolist,id){
 }
 
 
-//mark selected goal as complete
+//mark selected goal as complete/incomplete
 function markComp(event) {
+    if (event['event_status']){
+        event['event_status'] = JSON.stringify($('#compchck').is(':checked'));
+        checkGoal(event);
+    }
+
     $("input.check").change( function() {
         if($(this).is(':checked')){
             event['event_status'] = JSON.stringify($(this).is(':checked'));
