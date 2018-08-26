@@ -1,28 +1,3 @@
-//
-//const {app, BrowserWindow, Menu} = require('electron')
-//const path = require('path')
-//const url = require('url')
-//const shell = require('electron').shell
-//const $ = require('jquery')
-//
-//
-//
-//let mainWindow
-//function createWindow () {
-//  mainWindow = new BrowserWindow({width: 450, height: 700})
-//  mainWindow.setMenu(null)
-//  mainWindow.loadURL('http://127.0.0.1:5000/getallgoals/start')
-//  mainWindow.on('closed', function () {
-//    mainWindow = null
-//  })
-//
-//mainWindow.loadURL('/index.html')
-//mainWindow.webContents.openDevTools()
-//}
-
-
-
-
 function addNew() {
     location.href = '/newgoal'
 }
@@ -143,7 +118,7 @@ function markComp(event) {
     });
 }
 
-//edit active selected goal
+//display active goal to be edited
 function editGoal(event) {
 
     deadline = new Date(event['event_deadline'] + " UTC")
@@ -168,6 +143,7 @@ function editGoal(event) {
              $('#todoentry').hide();
              $('#todolist').hide();
              $('#addtodo').html('add/edit todo');
+
              $('#edit_eventname').val(event['event_name']);
              $('#edit_eventdeadline').val(dead.format(fmt));
              $('#edit_eventpriority').val(event['event_priority']);
@@ -176,7 +152,6 @@ function editGoal(event) {
             $('#canceltodo').click(function() {
                 $('#todolist').empty();
             });
-
             $('#addtodo').click(function() {
                 dispTodolist(event['event_todolist']);
             });
@@ -187,7 +162,6 @@ function editGoal(event) {
         buttons: {
             "save": function () {
                 saveGoal("edit",create.format(fmt),event['mongo_id']);
-//                getAll();
             },
             "cancel": function () {
                 $(this).dialog("close");
@@ -297,8 +271,8 @@ function saveGoal(action,create,mongo_id) {
 //Mark a goal as complete
 function checkGoal(dict){
 
-    chck = document.getElementById("chckHead")
-    dict["event_status"]= JSON.stringify(true)
+    check = $('input:checkbox[name=chckHead]').is(':checked')
+    dict["event_status"]= JSON.stringify(check)
 
     $.ajax({
           url: "/togglegoal",

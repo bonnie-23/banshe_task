@@ -151,6 +151,30 @@ li.collapsible ul{
     background-color: #f1f1f1;
 }
 
+
+input[type=radio] {
+    width: 20px;
+    height: 20px;
+}
+
+input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.vl {
+    border-left: px solid green;
+    height: 5px;
+}
+
+.glyphicon {
+  float: right;
+  margin-right: 5px;
+  margin-left: 5px;
+}
 </style>
 
 
@@ -160,9 +184,10 @@ li.collapsible ul{
         <div class="col-lg-12 text-center">
 
 
-            <a href="#portfolio"><h3>
+            <h3>
                 <label for = "tomorrow" >tomorrow</label>
                 <input type = "radio" id = "tomorrow" name="filter" value = "tomorrow" onclick="filterGoals();">
+                <!--<div class="vl"></div>-->
 
             <label for = "this week">this week
                 <input type = "radio" id = "this week" name="filter" value = "this week" onclick="filterGoals();">
@@ -172,12 +197,12 @@ li.collapsible ul{
             </label>
             <label for = "showall">show all
                 <input type = "radio" id = "showall" name="filter" value = "showall" onclick="getAll();">
-            </label></h3></a>
+            </label></h3>
 
             <br><br>
 
         </div>
-    </div>
+    </div><br>
 
     <div class="row">
         <div class="col">
@@ -201,7 +226,7 @@ li.collapsible ul{
                                      <div class="inputGroup">
                                         <input id="chckHead" class = "check" name="chckHead" type="checkbox" onclick="markComp({{event}});"/>
                                         <label for="chckHead"><span style="font-size:2em;">{{ event['event_name']}} </span></label>
-                                         <span style="font-size:2em;" class="glyphicon glyphicon-edit " id = "editgoal" onclick="editGoal({{event}});" ></span>
+                                         <span style="font-size:2em;" class="glyphicon glyphicon-edit" id = "editgoal" onclick="editGoal({{event}});" ></span>
                                          <span style="font-size:2em;" class="glyphicon glyphicon-trash" id = "deletegoal" onclick="deleteGoal({{event}});"></span>
                                      </div>
                                      <ul>
