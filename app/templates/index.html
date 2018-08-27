@@ -126,7 +126,7 @@ li.collapsible ul{
     background-color: #777;
     color: white;
     cursor: pointer;
-    padding: 10px;
+    padding: 10px 10px;
     width: 100%;
     border: none;
     text-align: left;
@@ -176,11 +176,12 @@ input[type=checkbox] {
   margin-left: 5px;
 }
 
-.todocount{
-  vertical-align:right;
-  margin-right:-15px;
-  margin-top: -20px;
-  font-size:13px;
+.media img+span.badge {
+    position: fixed;
+    top: 30px;
+    left: 8px;
+    font-size: 12.025px;
+    font-weight: bold;
 }
 </style>
 
@@ -239,13 +240,13 @@ input[type=checkbox] {
                                      <ul id = 'tlist' class = "tlist">
                                          {% if event['event_todolist']|length >0 %}
                                             {% for todo in event['event_todolist']%}
-                                                <li id="todo" value="{{todo}}">
-                                                    {{todo}}
-                                                </li>
+                                                <li id="todo" value="{{todo}}"> {{todo}} </li>
                                             {%endfor%}
                                          {% endif %}
                                      </ul>
-                                     <!--<span id = "todocount" class="badge badge-primary badge-pill todocount"></span>-->
+                                     {% if event['event_todolist']|length >0 %}
+                                        <span id = "todocount" class="badge badge-success badge-pill pull-right">{{event['event_todolist']|length}}</span>
+                                     {% endif %}
                                  </li>
 
                             {% endfor %}
