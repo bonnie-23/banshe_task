@@ -84,10 +84,11 @@ function cancelTodo() {
 
 }
 
-function deleteTodo(event) {
+function deleteTodo(item,id) {
     todolist =[]
     $('#todo').remove()
 
+    console.log(item, id)
     $('#todolist li').each(function(){
         todolist.push($(this).text());
             });
@@ -96,6 +97,8 @@ function deleteTodo(event) {
 }
 
 function dispTodolist(todolist,id){
+
+
     if (todolist.length>0) {
         for (i=0; i<todolist.length;i++ ){
             var new_id = Math.floor((Math.random() * 999) + 1)
@@ -104,7 +107,6 @@ function dispTodolist(todolist,id){
 //                todolist = todolist.splice(i,1)
 //                console.log(todolist.splice(i,1))
 //            });
-
             $('#todolist').append(
                 $('<input>').val(todolist[i]),
                 $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id=_' +new_id+ '>')
@@ -510,11 +512,6 @@ function loadActions() {
 
           });
     }
-
-    $('.collapsible').each(function () {
-        console.log($('.collapsible ul').length)
-        $('#todocount').html($('this ul').length)
-    });
 
 
 }
