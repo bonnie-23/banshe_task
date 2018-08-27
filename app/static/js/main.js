@@ -84,7 +84,7 @@ function cancelTodo() {
 
 }
 
-function deleteTodo(item,id) {
+function deleteTodo() {
     todolist =[]
     $('#todo').remove()
 
@@ -109,7 +109,7 @@ function dispTodolist(todolist,id){
 //            });
             $('#todolist').append(
                 $('<input>').val(todolist[i]),
-                $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id=_' +new_id+ '>')
+                $('<span style="font-size:1em;" onclick= "deleteTodo();" class="glyphicon glyphicon-remove" id=_' +new_id+ '>')
             );
 
 

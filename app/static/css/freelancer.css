@@ -511,6 +511,9 @@ fieldset[disabled] .btn-success.active {
     vertical-align: top;
 }
 
+.todaygoals li {
+    list-style: none;
+}
 
 .inputGroup {
     background-color: #fff;
