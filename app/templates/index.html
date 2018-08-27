@@ -244,8 +244,9 @@ input[type=checkbox] {
                                             {%endfor%}
                                          {% endif %}
                                      </ul>
-
-                                     <span id = "todocount" class="badge badge-success badge-pill pull-right">{{event['event_todolist']|length}}</span>
+                                     {% if event['event_todolist']|length >0 %}
+                                        <span id = "todocount" class="badge badge-success badge-pill pull-right">{{event['event_todolist']|length}}</span>
+                                     {% endif %}
                                  </li>
 
                             {% endfor %}
