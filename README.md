@@ -33,4 +33,4 @@ Features still in development:
 ------------------------------------------------------------------------------------------------------------------------------------------
 Delete todo item
 Set reminder frequency and get reminders at specified intervals daily, weekly, monthly until deadline arrives
-Display badge with count of todo items for each goal
+
