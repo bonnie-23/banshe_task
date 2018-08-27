@@ -1,6 +1,6 @@
 # banshe_task
 Banshe Task Manager is a task management application written in Python using a Flask API and storage with Mongo DB. 
-Its fronteend is written in Javascript using freelance template from Start Bootstrap.
+Its front end is written in Javascript using freelance template from Start Bootstrap.
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 With Banshe you can:
