@@ -59,12 +59,14 @@ function addTodo() {
     if ($("#todo_name").val()!=''){
         if ($('#addtodo').html() =='add/edit todo'){
             $("#todolist").append(
-                $('<input>').val($("#todo_name").val())
+                $('<input>').val($("#todo_name").val()),
+                $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id = "deletegoal" onclick="deleteTodo();">')
             )
         }
         else if ($('#addtodo').html() =='Add Todo') {
             $("#todolist").append(
-                $('<li style="font-size:20px;background-color: #9AA3AC;border-bottom-right-radius:10px;border-bbottom-left-radius:10px;" value =' +$("#todo_name").val()+' >').html($("#todo_name").val())
+                $('<li style="font-size:20px;background-color: #9AA3AC;border-bottom-right-radius:10px;border-bbottom-left-radius:10px;" value =' +$("#todo_name").val()+' >').html($("#todo_name").val()),
+                $('<span style="font-size:1em;" class="glyphicon glyphicon-remove" id = "deletegoal" onclick="deleteTodo();">')
             )
         }
         $("#todo_name").val('')
@@ -88,7 +90,6 @@ function deleteTodo() {
     todolist =[]
     $('#todo').remove()
 
-    console.log(item, id)
     $('#todolist li').each(function(){
         todolist.push($(this).text());
             });
